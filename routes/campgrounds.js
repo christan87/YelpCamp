@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Campground = require("../models/campground");
+var Comment = require("../models/comment");
 var middleware = require("../middleware");
 
 //INDEX - Show all campgrounds
@@ -99,7 +100,16 @@ router.delete("/campgrounds/:id", middleware.checkCampgroundOwnership, function(
             res.redirect("/campgrounds");
         }
         else{
-            res.redirect("/campgrounds");
+            Comment.deleteMany({_id: {$in: foundCampground.comments}}, function(err){
+                if(err){
+                    console.log(err);
+                    res.redirect("/campgrounds");
+                }
+                else{
+                    res.redirect("/campgrounds");
+                }
+            });
+            
         }
     });
 });
