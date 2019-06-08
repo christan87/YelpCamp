@@ -17,3 +17,13 @@
 #comment_delete{
     display: inline;
 }
+
+/*
+-Google Maps-
+ styles the map div on the (views/campgrounds/show.ejs) file 
+*/
+
+#map{
+    height: 400px;
+    width: 100%;
+}

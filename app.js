@@ -1,3 +1,4 @@
+require("dotenv").config();
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
@@ -66,5 +67,6 @@ app.use(campgroundRoutes);
 app.use(commentRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("The YelpCamp Server Has Started!")
+    console.log("The YelpCamp Server Has Started!");
+    console.log("ENV KEY: " + process.env.GEOCODER_API_KEY);
 });
