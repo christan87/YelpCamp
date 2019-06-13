@@ -19,9 +19,9 @@
                     <h4 class="pull-right">$<%= campground.price %>/night</h4>
                     <h4><a><%=campground.name%></a></h4>
                     <p><%=campground.description%></p>
-                    <p><em>Added by - <%=campground.author.username%></em></p>
+                    <p><em>Added by - <%=campground.author.username%>, <%= moment(campground.createdAt).fromNow() %></em></p>
                     
-                    <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
+                    <% if(currentUser && campground.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin === true){ %>
                         <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
                         <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger">Delete</button>
@@ -39,9 +39,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <strong><%= comment.author.username %></strong>
-                            <span class="pull-right">10 days ago  </span>
+                            <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
                             <p><%= comment.text %></p>
-                            <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                            <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin === true){ %>
                                 <a class="btn btn-xs btn-warning" href="/campgrounds/<%=campground._id%>/comments/<%=comment.id%>/edit">Edit</a>
                                 <form id="comment_delete" action="/campgrounds/<%=campground._id%>/comments/<%=comment.id%>?_method=DELETE" method="POST">
                                     <button class="btn btn-xs btn-danger">Delete</button>
