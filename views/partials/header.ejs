@@ -41,7 +41,7 @@
                   <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
               <% } else { %>
                   <% if(currentUser && currentUser.isAdmin){ %>
-                    <li><a href="#">Signed In As Admin: <%= currentUser.username %></a></li>
+                    <li><a href="#">Administrator : <%= currentUser.username %></a></li>
                   <% } else{ %>
                     <li><a href="#">Signed In As <%= currentUser.username %></a></li>
                   <% } %>
@@ -51,9 +51,7 @@
         </div>
     </div>
   </nav>
-    <% if(currentUser && currentUser.isAdmin){ %>
-      <h1>ADMIN PRIVILAGES</h1>
-    <% } %>
+
     <div class="container">
       <% if(error && error.length > 0) { %>
         <div class="alert alert-danger" role="alert">
