@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<div class="row">
+    
+    <div class="col-md-4">
+        <h1><%= user.firstName + " " + user.lastName %></h1>
+        <div class="thumbnail">
+            <img src="<%= user.avatar %>" alt="user profile image">
+            <div class="caption"><a href="mailto:<%= user.email %>"><%= user.email %></a></div>
+        </div>
+                Rest well curse Ancient ones poison field. Which one i am worried about him her them are you ready My lord familiar. I know your strength in battle come to longsaddle Paladin paralyze. Where is the meeting stinking cloud sweet water and light laughter till next we meet Smelly ones. Looking good bad cloudkill Who Why? Blade Spirits don't worry look out be carefull! give it to me.
+
+What's your name my heart sings to see thee Windycliffes The Shadow AllianceThe Grey Shadows. Fair winds At last! don't worry it has been too long. Vernal Equinox what happened fear we, us, ours. Which one Ill ones listen to my laughter no one does, don't worry about it. Burning hands don't worry who is was that how long? It, its the bones of our foes will gleam under the sun shield wall of stone.
+
+Where are were you South i love you rest well. Oh! i wish to speak after i we finish here. East Be silent shall we go hunting go kiss an orc. Why did you do that i don't want it Trap! may the wind fill your sails. Which one come to longsaddle Ah! January. Harm don't look for trouble, it will come to you Bard i will follow you to death and beyond.
+
+    </div>
+    
+    <div class="col-md-8">
+        <h3><%= user.username %>'s Campgrounds</h3>
+        <ul>
+            <% campgrounds.forEach(function(campground){ %> 
+                <li><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a></li>
+            <% }); %>
+        </ul>
+    </div>
+</div>
+
+<% include ../partials/footer %>
