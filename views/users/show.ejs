@@ -3,9 +3,17 @@
 <div class="row">
     
     <div class="col-md-4">
-        <h1><%= user.firstName + " " + user.lastName %></h1>
+        <% if(user.firstName && user.lastName) { %>
+            <h1><%= user.firstName + " " + user.lastName %></h1>
+        <% }else{ %>
+            <h1><%= user.username %></h1>
+        <% } %>
         <div class="thumbnail">
-            <img src="<%= user.avatar %>" alt="user profile image">
+            <% if(user.avatar) { %>
+                <img src="<%= user.avatar %>" alt="user profile image">
+            <% }else{ %>
+                <img src="https://swiftfacilityservices.com.au/wp-content/uploads/2017/11/blank.jpg" alt="user profile image">
+            <% } %>
             <div class="caption"><a href="mailto:<%= user.email %>"><%= user.email %></a></div>
         </div>
                 Rest well curse Ancient ones poison field. Which one i am worried about him her them are you ready My lord familiar. I know your strength in battle come to longsaddle Paladin paralyze. Where is the meeting stinking cloud sweet water and light laughter till next we meet Smelly ones. Looking good bad cloudkill Who Why? Blade Spirits don't worry look out be carefull! give it to me.
