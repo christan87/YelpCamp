@@ -21,11 +21,11 @@ router.get("/register", function(req, res){
 
 //==>--Registration Route--
 router.post("/register", function(req, res) {
-    var username = req.bod.username;
-    var firstName = req.bod.firstName;
-    var lastName = req.bod.lastName;
-    var email = req.bod.email;
-    var avatar = req.bod.avatar;
+    var username = req.body.username;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var email = req.body.email;
+    var avatar = req.body.avatar;
     var newUser = new User({username: username, firstName: firstName, lastName: lastName, email: email, avatar: avatar});
     if(req.body.adminCode === "secret_admin123"){
         newUser.isAdmin = true;
