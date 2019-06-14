@@ -53,7 +53,14 @@
             </div>
         </div>
     </div>
-    
+
+<!--Defaults to Central Park Newyork for campsites without a location-->
+
+<%if(!campground.lat && !campground.lng){ %>
+    <% campground.lat = 40.785091; %>
+    <% campground.lng = -73.968285; %>
+<% } %>
+
 <script>
   function initMap() {
     var campground = document.getElementById("campground");
