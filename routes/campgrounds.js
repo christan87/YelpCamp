@@ -17,14 +17,38 @@ var geocoder = NodeGeocoder(options);
 //INDEX - Show all campgrounds
 router.get("/campgrounds", function(req, res){
     //Get All Campgrounds
-    Campground.find({}, function(err, allCampgrounds){
-        if(err){
-            console.log(err);
-        }
-        else{
-            res.render("campgrounds/index", {campgrounds: allCampgrounds, page: "campgrounds"});
-        }
-    });
+    var noMatch = null;
+    if(req.query.search){
+        //plugis in our search and 'gi' (global, ignore case?) 
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Campground.find({name: regex}, function(err, allCampgrounds){
+            if(err){
+                console.log(err);
+            }
+            else{
+                if(allCampgrounds.length < 1){
+                    noMatch = "No Campgrounds match that query, please try again.";
+                    req.flash("error", noMatch);
+                    //passing the error as an object allows the flash to display on the correct page (the first time as opposed to after reloading). 
+                    res.render("campgrounds/index", {campgrounds: allCampgrounds, page: "campgrounds", error:noMatch});
+                    
+                }
+                else{
+                    res.render("campgrounds/index", {campgrounds: allCampgrounds, page: "campgrounds"});
+                }
+            }
+        });
+    }
+    else{
+        Campground.find({}, function(err, allCampgrounds){
+            if(err){
+                console.log(err);
+            }
+            else{
+                res.render("campgrounds/index", {campgrounds: allCampgrounds, page: "campgrounds", noMatch: noMatch});
+            }
+        });
+    }
     // res.render("campgrounds", {campgrounds: campgrounds});
 });
 
@@ -216,5 +240,17 @@ router.delete("/campgrounds/:id", middleware.checkCampgroundOwnership, function(
 //==================
 //--MIDDLEWARE END--
 //==================
+
+//=============
+//--FUNCTIONS--
+//=============
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+//=================
+//--FUNCTIONS End--
+//=================
 
 module.exports = router;

@@ -37,9 +37,33 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
               <% if(!currentUser){ %>
+                  <!--Fuzzy Search Form-->
+                  <li>
+                    <p>
+                      <form action="/campgrounds" method="GET" class="form-inline">
+                          <div class="form-group">
+                              <input type="text" name="search" placeholder="Campground search..." class="form-control">
+                              <input type="submit" value="Search" class="btn btn-default">
+                          </div>
+                      </form>
+                    </p>
+                  </li>
+                  
                   <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
                   <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
               <% } else { %>
+                  <!--Fuzzy Search Form-->
+                  <li>
+                    <p>
+                      <form action="/campgrounds" method="GET" class="form-inline">
+                          <div class="form-group">
+                              <input type="text" name="search" placeholder="Campground search..." class="form-control">
+                              <input type="submit" value="Search" class="btn btn-default">
+                          </div>
+                      </form>
+                    </p>
+                  </li>
+                  
                   <% if(currentUser && currentUser.isAdmin){ %>
                     <li><a href="#">Administrator : <%= currentUser.username %></a></li>
                   <% } else{ %>
