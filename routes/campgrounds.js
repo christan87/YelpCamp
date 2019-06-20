@@ -14,6 +14,36 @@ var options = {
  
 var geocoder = NodeGeocoder(options);
 
+var multer = require('multer');
+//creates a sotrage variable using multer and create a name for it which is ther current date + the original name
+var storage = multer.diskStorage({
+  filename: function(req, file, callback) {
+    callback(null, Date.now() + file.originalname);
+  }
+});
+//this is the image filter that gets plugged below. It insures that whatever file is uploaded has a valid image extension
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+//the upload variable completes the multer config using the storage and filter vars we creatd.
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+//this is the cloudinary config whichi s pretty straight forward 
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'dxnxtxxep', 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+//==============
+//--CONFIG END--
+//==============
+
 //INDEX - Show all campgrounds
 router.get("/campgrounds", function(req, res){
     //Get All Campgrounds
@@ -89,36 +119,46 @@ router.get("/campgrounds/new", middleware.isLoggedIn, function(req, res){
 // });
 
 //CREATE - add new campground to DB
-router.post("/campgrounds", middleware.isLoggedIn, function(req, res){
-  // get data from form and add to campgrounds array
-  var name = req.body.name;
-  var image = req.body.image;
-  var desc = req.body.description;
-  var price = req.body.price;
-  var author = {
-      id: req.user._id,
-      username: req.user.username
-  }
-  geocoder.geocode(req.body.location, function (err, data) {
-    if (err || !data.length) {
-      req.flash('error', 'Invalid address');
-      return res.redirect('back');
-    }
-    var lat = data[0].latitude;
-    var lng = data[0].longitude;
-    var location = data[0].formattedAddress;
-    var newCampground = {name: name, price: price, image: image, description: desc, author:author, location: location, lat: lat, lng: lng};
-    // Create a new campground and save to DB
-    Campground.create(newCampground, function(err, newlyCreated){
-        if(err){
-            console.log(err);
-        } else {
-            //redirect back to campgrounds page
-            console.log(newlyCreated);
-            res.redirect("/campgrounds");
+router.post("/campgrounds", middleware.isLoggedIn, upload.single("image"), function(req, res){
+    //req.file.path provided by multer, this uploades the image to cloudinary and gets a result back which is used in the callback
+    cloudinary.uploader.upload(req.file.path, function(result){
+      // get data from form and add to campgrounds array
+    //   var name = req.body.name;
+    //   var image = req.body.image;
+    //   var desc = req.body.description;
+    //   var price = req.body.price;
+      req.body.campground.image = result.secure_url;
+      var author = {
+          id: req.user._id,
+          username: req.user.username
+      }
+      geocoder.geocode(req.body.campground.location, function (err, data) {
+        if (err || !data.length) {
+          req.flash('error', 'Invalid address');
+          return res.redirect('back');
         }
+        var lat = data[0].latitude;
+        var lng = data[0].longitude;
+        var location = data[0].formattedAddress;
+        var newCampground = req.body.campground;
+        newCampground.author = author;
+        newCampground.lat = lat;
+        newCampground.lng = lng;
+        //var newCampground = {name: name, price: price, image: image, description: desc, author:author, location: location, lat: lat, lng: lng};
+        // Create a new campground and save to DB
+        Campground.create(newCampground, function(err, newlyCreated){
+            if(err){
+                req.flash("error", err.message);
+                console.log(err);
+                return res.redirect("back");
+            } else {
+                //redirect back to campgrounds page
+                console.log(newlyCreated);
+                res.redirect("/campgrounds");
+            }
+        });
+      });
     });
-  });
 });
 
 //SHOW - shows more info about one campground

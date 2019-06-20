@@ -76,6 +76,6 @@ app.use(commentRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("The YelpCamp Server Has Started!");
-    console.log("Gmail: " + process.env.GMAILPW);
-    console.log("ENV KEY: " + process.env.GEOCODER_API_KEY);
+    //console.log("Api Key: " + process.env.CLOUDINARY_API_KEY);
+    //console.log("Api Secret : " + process.env.CLOUDINARY_API_SECRET);
 });
