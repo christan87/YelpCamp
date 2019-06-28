@@ -155,7 +155,8 @@ router.post("/campgrounds", middleware.isLoggedIn, upload.single("image"), funct
       req.body.campground.image = result.secure_url;
       var author = {
           id: req.user._id,
-          username: req.user.username
+          username: req.user.username,
+          avatar: req.user.avatar
       }
       geocoder.geocode(req.body.campground.location, function (err, data) {
         if (err || !data.length) {
