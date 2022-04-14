@@ -10,7 +10,7 @@
   "author": "Christan Price",
   "license": "ISC",
   "dependencies": {
-    "async": "^3.0.1",
+    "async": "^3.2.2",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.14.0",
     "connect-flash": "^0.1.1",
